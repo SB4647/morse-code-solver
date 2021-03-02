@@ -32,9 +32,7 @@ const convertMessage = (message, transferArr) => {
   //spilt the message string into an array of characters (each seperated by a deliminator)
   let transferMessage = message.split(delim1);
   //convert the message 
-  transferMessage = transferMessage.reduce((enc, char) => enc += transferArr[char] + delim2, "");
-  //display converted message to output text-area
-  displayOutput(transferMessage);
+  return transferMessage = transferMessage.reduce((enc, char) => enc + transferArr[char] + delim2, "");
 
 }
 
@@ -68,7 +66,9 @@ form.addEventListener('submit', event => {
   event.preventDefault();
 
   //convert input message according to which mode was selected
-  (mode === "encode") ? convertMessage(inputMessage.value, alphabet) : convertMessage(inputMessage.value, morse);
+  const convertedMessage = (mode === "encode") ? convertMessage(inputMessage.value, alphabet) : convertMessage(inputMessage.value, morse);
+
+  displayOutput(convertedMessage);
 
 });
 
