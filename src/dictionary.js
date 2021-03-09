@@ -1,7 +1,7 @@
 
 
 
-export const alphabet = {  
+const alphabet = {  
     "0":"-----",
     "1":".----",
     "2":"..---",
@@ -44,7 +44,7 @@ export const alphabet = {
     ",":"--··--"
   };
 
-export const morse = {
+const morse = {
     "-----": "0",
     ".----": "1",
     "..---": "2",
@@ -85,6 +85,9 @@ export const morse = {
     "-·-·--": "!",
     "·-·-·-": ".",
     "--··--": ",",
-  };
+  }
 
   
+module.exports = {
+  alphabet, morse
+}

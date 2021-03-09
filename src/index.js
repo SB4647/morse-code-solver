@@ -1,4 +1,5 @@
-import { alphabet, morse } from './dictionary.js';
+const { alphabet, morse } = require('./dictionary.js');
+
 
 //retrieve mutable html element data
 const inputMessage = document.getElementById('inputMessage');
@@ -10,9 +11,12 @@ const form = document.getElementById('form');
 let mode = "encode";
 
 /* FUNCTIONS */
-
 //display the converted message to output text-area
 const displayOutput = (message) => {
+
+  if (typeof message !== "string" && message !== undefined) {
+    throw new Error("Input message is not a string");
+  }
 
   outputMessage.innerHTML = message;
 
@@ -22,10 +26,14 @@ const convertMessage = (message, transferArr) => {
 
   //check if transferArr is defined in dictionary.js and throw error if not
   if (transferArr !== morse && transferArr !== alphabet) {
-
     throw new Error("transferArr needs to defined in dictionary.js");
-
   }
+
+  //check if transferArr is defined in dictionary.js and throw error if not
+  if (typeof message !== "string") {
+    throw new Error("Input message is not a string");
+  }
+
 
   //set deliminators according to the message converting mode selected
   const [delim1, delim2] = (transferArr === alphabet) ? ['', ' '] : [' ', ''];
@@ -38,57 +46,84 @@ const convertMessage = (message, transferArr) => {
 
 /* EVENT HANDLERS */
 
-//add event handler to radio buttons
-radioButtons.forEach(btn => {
-  btn.addEventListener("change", event => {
+const radioBtnHandle = (event) => {
+
+    if (event.target.id !== "encodeChecked" && event.target.id !== "decodeChecked") {
+      throw new Error("Incorrect id assigned to radio button");
+    }
 
     //set message conversion mode (encode or decode) according to which radio button is selected
-    if (event.target.id === "encodeChecked") {
-      inputMessage.placeholder = 'Enter unencryped message here';
-      outputMessage.placeholder = 'Encrypted message will be shown here';
-      inputMessage.value = '';
-      mode = "encode";
-    }
+    try {
 
-    if (event.target.id === "decodeChecked") {
-      inputMessage.placeholder = 'Enter encryped message here';
-      outputMessage.placeholder = 'Decoded message will be shown here';
-      inputMessage.value = '';
-      mode = "decode";
-    }
+      if (event.target.id === "encodeChecked") {
+        inputMessage.placeholder = 'Enter unencryped message here';
+        outputMessage.placeholder = 'Encrypted message will be shown here';
+        inputMessage.value = '';
+        mode = "encode";
+      }
+  
+      if (event.target.id === "decodeChecked") {
+        inputMessage.placeholder = 'Enter encryped message here';
+        outputMessage.placeholder = 'Decoded message will be shown here';
+        inputMessage.value = '';
+        mode = "decode";
+      }
 
-  })
+    } catch(err) {
+      throw new Error("Radio button failed to set parameters correctly");
+    }
+ 
+
+  }
+
+
+const submitHandle = () => {
+    //prevent form 
+    this.preventDefault();
+  
+    //convert input message according to which mode was selected
+    const convertedMessage = (mode === "encode") ? convertMessage(inputMessage.value, alphabet) : convertMessage(inputMessage.value, morse);
+  
+    displayOutput(convertedMessage);
+  
+  }
+
+
+const inputHandle = () => {
+
+    let charValidArr = [];
+
+    charValidArr = (mode === "encode") ? inputMessage.value.match(/[a-z0-9 !.,]/g) : inputMessage.value.match(/[ ./-]/g);
+  
+    if (charValidArr === null || (charValidArr.join('') !== inputMessage.value)) {
+      inputMessage.value = '';
+      alert("Invalid character entered. Enter a valid input message");
+    }
+  
+  }
+
+
+//add event handler to radio buttons
+radioButtons.forEach(btn => {
+  btn.addEventListener("change", radioBtnHandle);
 });
 
 //add event handler to form submit event
-form.addEventListener('submit', event => {
-  //prevent form 
-  event.preventDefault();
+if (form) {
+  form.addEventListener('submit', submitHandle);
+}
 
-  //convert input message according to which mode was selected
-  const convertedMessage = (mode === "encode") ? convertMessage(inputMessage.value, alphabet) : convertMessage(inputMessage.value, morse);
-
-  displayOutput(convertedMessage);
-
-});
 
 //add event handler to input into text-area event
 //only allows the user to enter characters that can be encoded/decoded according to dictionary.js library
-inputMessage.addEventListener('input', event => {
-
-  let charValidArr = [];
-
-  charValidArr = (mode === "encode") ? inputMessage.value.match(/[a-z0-9 !.,]/g) : inputMessage.value.match(/[ ./-]/g);
-
-  if (charValidArr === null || (charValidArr.join('') !== inputMessage.value)) {
-    inputMessage.value = '';
-    alert("Invalid character entered. Enter a valid input message");
-  }
-
-});
+if (inputMessage) {
+  inputMessage.addEventListener('input', inputHandle);
+}
 
 
-
+module.exports = {
+    displayOutput, convertMessage, radioBtnHandle, inputHandle
+}
 
 
 
