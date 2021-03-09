@@ -1,0 +1,23 @@
+{
+  "name": "stephen",
+  "version": "1.0.0",
+  "description": "Morse Code Translator",
+  "main": "index.test.js",
+  "scripts": {  
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SB4647/morse-code-solver.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SB4647/morse-code-solver/issues"
+  },
+  "homepage": "https://github.com/SB4647/morse-code-solver#readme",
+  "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.13.8",
+    "jest": "^26.6.3"
+  }
+}

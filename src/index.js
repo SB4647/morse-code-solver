@@ -1,4 +1,4 @@
-const { alphabet, morse } = require('./dictionary.js');
+import { alphabet, morse } from './dictionary.js';
 
 
 //retrieve mutable html element data
@@ -12,7 +12,7 @@ let mode = "encode";
 
 /* FUNCTIONS */
 //display the converted message to output text-area
-const displayOutput = (message) => {
+export const displayOutput = (message) => {
 
   if (typeof message !== "string" && message !== undefined) {
     throw new Error("Input message is not a string");
@@ -22,7 +22,7 @@ const displayOutput = (message) => {
 
 }
 
-const convertMessage = (message, transferArr) => {
+export const convertMessage = (message, transferArr) => {
 
   //check if transferArr is defined in dictionary.js and throw error if not
   if (transferArr !== morse && transferArr !== alphabet) {
@@ -34,19 +34,20 @@ const convertMessage = (message, transferArr) => {
     throw new Error("Input message is not a string");
   }
 
-
   //set deliminators according to the message converting mode selected
   const [delim1, delim2] = (transferArr === alphabet) ? ['', ' '] : [' ', ''];
   //spilt the message string into an array of characters (each seperated by a deliminator)
   let transferMessage = message.split(delim1);
   //convert the message 
-  return transferMessage = transferMessage.reduce((enc, char) => enc + transferArr[char] + delim2, "");
+  transferMessage = transferMessage.reduce((enc, char) => enc + transferArr[char] + delim2, "");
+  //remove deliminator at end of string 
+  return transferMessage.slice(0, -1);
 
 }
 
 /* EVENT HANDLERS */
 
-const radioBtnHandle = (event) => {
+export const radioBtnHandle = event => {
 
     if (event.target.id !== "encodeChecked" && event.target.id !== "decodeChecked") {
       throw new Error("Incorrect id assigned to radio button");
@@ -77,9 +78,9 @@ const radioBtnHandle = (event) => {
   }
 
 
-const submitHandle = () => {
+export const submitHandle = event => {
     //prevent form 
-    this.preventDefault();
+    event.preventDefault();
   
     //convert input message according to which mode was selected
     const convertedMessage = (mode === "encode") ? convertMessage(inputMessage.value, alphabet) : convertMessage(inputMessage.value, morse);
@@ -89,7 +90,7 @@ const submitHandle = () => {
   }
 
 
-const inputHandle = () => {
+export const inputHandle = () => {
 
     let charValidArr = [];
 
@@ -121,11 +122,7 @@ if (inputMessage) {
 }
 
 
-module.exports = {
-    displayOutput, convertMessage, radioBtnHandle, inputHandle
-}
-
-
+export default { displayOutput,convertMessage, radioBtnHandle, inputHandle};
 
 
 

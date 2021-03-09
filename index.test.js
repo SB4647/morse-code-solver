@@ -1,7 +1,6 @@
-const { displayOutput, convertMessage, radioBtnHandle } = require('./src/index.js');
+import { displayOutput, convertMessage, radioBtnHandle } from './src/index.js';
 
-const { alphabet, morse } = require('./src/dictionary.js');
-  
+import { alphabet, morse } from './src/dictionary.js';
 
 describe('convertMessage() tests', () => {
 
@@ -59,18 +58,9 @@ describe('radioBtnHandle() tests', () => {
     test('target id is incorrect', () => {
         expect(() =>  radioBtnHandle({target: {id: "encoecked"}})).toThrowError(new Error("Incorrect id assigned to radio button"));
     });
-
   
 });
 
-describe('inputHandle() tests', () => {
-
-    const inputMessage = document.getElementById('inputMessage');
-    // test('target id is incorrect', () => {
-    //     expect(() =>  radioBtnHandle({target: {id: "encoecked"}}).toThrowError(new Error("Incorrect id assigned to radio button"));
-    // });
-  
-});
 
 
 
