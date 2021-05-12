@@ -1,4 +1,4 @@
-# Morse-Code
+# Morse-Code-solver
 
 ### _nology Challenge 
 
